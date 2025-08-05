@@ -1,0 +1,45 @@
+{% extends "layout/base.html" %}
+{% block content %}
+
+<div class="container py-5">
+  <div class="text-center" x-data="pizzaHandler()">
+    <h1 class="mb-4">Async/Await con Alpine.js</h1>
+    <p class="lead">Haz clic para pedir una pizza. ¡Verás cómo espera antes de mostrar el resultado!</p>
+
+    <button class="btn btn-primary btn-lg" @click="pedirPizza" :disabled="esperando">
+      <template x-if="!esperando">
+        <span>🍕 Pedir Pizza</span>
+      </template>
+      <template x-if="esperando">
+        <span>
+          <span class="spinner-border spinner-border-sm me-1"></span>
+          Esperando pizza...
+        </span>
+      </template>
+    </button>
+
+    <div class="mt-4">
+      <pre class="bg-white border rounded p-3 text-start" style="min-height: 180px;" x-text="log"></pre>
+    </div>
+  </div>
+
+
+<script>
+function pizzaHandler() {
+  return {
+    esperando: false,
+    log: '',
+    async pedirPizza() {
+      this.esperando = true;
+      this.log = '';
+      // Simula una espera de 2 segundos
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      this.log = '¡Tu pizza está lista! 🍕';
+      this.esperando = false;
+    }
+  }
+}
+</script>
+
+{% endblock %}
+
